@@ -1,14 +1,16 @@
 # Module 2 ETH+AVAX INTERMEDIATE
 In this I am creating a smart contract following the guidelines of module 2 of the project requirements.
-In this project, I created a simple contract with 2-3 functions. Then showing the values of those functions in frontend of the application.
+In this project, I created a simple contract(StudentBook) with 2-3 functions. Then showing the values of those functions in frontend of the application.
 
 ## Description
 
 ![image](https://github.com/user-attachments/assets/6ad28ada-4e30-49c4-984c-2ded25b872d9)
-This project involves the creation of a basic smart contract called "HostelBook" using Solidity. 
+This project involves the creation of a basic smart contract called "StudentBook" using Solidity. 
 vedio walkthrough:
 
 https://www.loom.com/share/81c6a4e5344f407785b740a59e45af98?sid=4b08165c-d31c-4b86-9b3e-9e5194589a37
+
+![image](https://github.com/user-attachments/assets/f898e11d-0a97-4d00-9296-413eff861718)
 
 Functionalities
 - Owner Address Retrieval:
@@ -20,6 +22,8 @@ This function allows users to retrieve the address of the contract owner. It ens
 
 Front-End Display:
 A simple front-end interface is created to display the results of the interactions with the contract. Users can view the owner address and the total score directly from the web interface, providing a user-friendly experience.
+![image](https://github.com/user-attachments/assets/732d7176-de9a-4373-bcc2-0bffa7cc4e1b)
+
 These functionalities provide a straightforward way to interact with the contract, retrieve essential information, and track the progress of the cricket game, all while ensuring secure and transparent transactions through MetaMask.
 
 ## Getting Started
