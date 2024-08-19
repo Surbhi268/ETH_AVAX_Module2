@@ -1,36 +1,144 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Module 2 ETH+AVAX INTERMEDIATE
+In this I am creating a smart contract following the guidelines of module 2 of the project requirements.
+In this project, I created a simple contract with 2-3 functions. Then showing the values of those functions in frontend of the application.
+
+## Description
+
+![image](https://github.com/user-attachments/assets/6ad28ada-4e30-49c4-984c-2ded25b872d9)
+This project involves the creation of a basic smart contract called "HostelBook" using Solidity. 
+vedio walkthrough:
+
+https://www.loom.com/share/81c6a4e5344f407785b740a59e45af98?sid=4b08165c-d31c-4b86-9b3e-9e5194589a37
+
+Functionalities
+- Owner Address Retrieval:
+This function allows users to retrieve the address of the contract owner. It ensures transparency by displaying the address of the individual or entity that deployed the contract.
+- Add student in the list
+- Remove student from the list
+- Show the total count of student from the list
+- MetaMask is used to execute transactions and interact with the smart contract. Users can connect their MetaMask wallet to the application, allowing them to perform actions such as retrieving the owner address and checking the new added students record, no of total students, removed students securely and seamlessly.
+
+Front-End Display:
+A simple front-end interface is created to display the results of the interactions with the contract. Users can view the owner address and the total score directly from the web interface, providing a user-friendly experience.
+These functionalities provide a straightforward way to interact with the contract, retrieve essential information, and track the progress of the cricket game, all while ensuring secure and transparent transactions through MetaMask.
 
 ## Getting Started
 
-First, run the development server:
+### Executing program
+Step-by-step guide for executing the program:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Compile and Deploy Smart Contract:**
+   - Open Remix IDE.
+   - Compile the smart contract code.
+   - Deploy the contract.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Copy Contract Details:**
+   - Copy the deployed contract address.
+   - Copy the ABI (Application Binary Interface).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+3. **Integrate with Frontend:**
+   - Open our frontend application (page.js).
+   - Paste the deployed contract address into page.js.
+   - Integrate the ABI into page.js.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+4. **Write Functions:**
+   - Write JavaScript functions in page.js to interact with the smart contract's functions.
 
-## Learn More
+5. **Run Next.js Application:**
+   - Run the application using `npm run dev`.
 
-To learn more about Next.js, take a look at the following resources:
+6. **Connect and Interact:**
+   - Open a browser and go to `http://localhost:3030`.
+   - Connect the frontend application to MetaMask.
+   - Call the contract functions and execute transactions via MetaMask.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+These steps should help you set up and execute your program efficiently.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## CODE
+Solidity CODE
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.22;
 
-## Deploy on Vercel
+contract StudentBook {
+    address immutable OWNER;
+    struct student {
+        string name;
+        uint age;
+        address _address;
+        string date;
+    }
+    mapping(address => uint) private studentCount;
+    mapping(address => uint) private removedStudent;
+    mapping(address => student[]) private studentList;
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    modifier onlyOwner() {
+        _onlyMe();
+        _;
+    }
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    function _onlyMe() private view {
+        require(OWNER == msg.sender, "Caller is not the owner");
+    }
+
+    constructor() {
+        OWNER = msg.sender;
+    }
+
+    function addStudentInList(
+        string memory _name,
+        uint _age,
+        address _address,
+        string memory _date
+    ) external {
+        studentList[msg.sender].push(student(_name, _age, _address, _date));
+        studentCount[msg.sender]++;
+    }
+
+    function returnstudentList() external view returns (student[] memory) {
+        uint l = studentList[msg.sender].length;
+        uint TotalstudentsRemaining = studentCount[msg.sender] -
+            removedStudent[msg.sender];
+        uint index = 0;
+
+        student[] memory newstudentArray = new student[](
+            TotalstudentsRemaining < 1 ? 0 : TotalstudentsRemaining
+        );
+
+        for (uint i = 0; i < l; i++) {
+            student memory val = studentList[msg.sender][i];
+            if (val._address != address(0)) {
+                newstudentArray[index] = val;
+                index++;
+            }
+        }
+        return newstudentArray;
+    }
+
+    function removestudent(uint index) external {
+        uint lastIndex = studentList[msg.sender].length;
+
+        studentList[msg.sender][index] = studentList[msg.sender][lastIndex - 1];
+        studentList[msg.sender].pop();
+
+        removedStudent[msg.sender]++;
+    }
+
+    function totalstudent() external view returns (uint) {
+        return studentCount[msg.sender] - removedStudent[msg.sender];
+    }
+
+    function totalRemoved() external view returns (uint) {
+        return removedStudent[msg.sender];
+    }
+}
+
+## Authors
+
+Surbhi Priya
+
+Email- psurbhi237@gmail.com
+
+## License
+
+This project is licensed under the MIT License 
+
